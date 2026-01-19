@@ -1,0 +1,28 @@
+# Виключення для uv
+.venv/
+.uv/
+
+# Python інше
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Дистрибутиви та пакунки
+dist/
+build/
+*.egg-info/
+
+# Змінні середовища (чутливі дані)
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Логи
+*.log
+
+# Тимчасові файли редакторів
+.vscode/
+.idea/
+.DS_Store
