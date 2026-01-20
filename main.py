@@ -40,12 +40,12 @@ def get_problem(problem_type):
 
 
 def main(page: ft.Page):
-    page.window_icon = "icon.png"
-    page.favicon = "icon.png"
+    # page.window_icon = "icon.png"
+    # page.favicon = "icon.png"
+    page.window.width = 300
+    page.window.height = 400
     page.title = "Математичний тренажер"
     page.theme_mode = ft.ThemeMode.DARK
-    page.window_width = 400
-    page.window_height = 600
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
