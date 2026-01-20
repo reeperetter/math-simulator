@@ -106,7 +106,7 @@ def main(page: ft.Page):
             state["current_idx"] += 1
             next_problem()
         except:
-            answer_field.error_text = "Введіть число"
+            answer_field.error = "Введіть число"
             page.update()
 
     def show_final_results():
