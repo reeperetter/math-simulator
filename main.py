@@ -40,12 +40,8 @@ def get_problem(problem_type):
 
 
 def main(page: ft.Page):
-    page.window_icon = "icon.png"
-    page.favicon = "icon.png"
     page.title = "Математичний тренажер"
     page.theme_mode = ft.ThemeMode.DARK
-    page.window_width = 400
-    page.window_height = 600
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
@@ -89,7 +85,7 @@ def main(page: ft.Page):
             p = state["problems"][state["current_idx"]]
             question_text.value = f"{p[0]} {p[3]} {p[1]}"
             answer_field.value = ""
-            answer_field.focus()
+            # answer_field.focus()
         else:
             show_final_results()
         page.update()
@@ -106,7 +102,7 @@ def main(page: ft.Page):
             state["current_idx"] += 1
             next_problem()
         except:
-            answer_field.error_text = "Введіть число"
+            answer_field.error = "Введіть число"
             page.update()
 
     def show_final_results():
