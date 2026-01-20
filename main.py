@@ -1,16 +1,47 @@
 import flet as ft
 from random import randrange
 
-
-def get_problem():
-    a, b = 0, 0
-    while a <= b:
+def get_problem(problem_type):
+    if problem_type == "Додавання":
         a = randrange(1, 101)
         b = randrange(1, 101)
-    return a, b, a - b
+        return a, b, a + b, "+"
+
+    if problem_type == "Віднімання":
+        a, b = 0, 0
+        while a <= b:
+            a = randrange(1, 101)
+            b = randrange(1, 101)
+        return a, b, a - b, "-"
+
+    if problem_type == "Множення":
+        a = randrange(1, 101)
+        b = randrange(1, 101)
+        return a, b, a * b, "*"
+
+    if problem_type == "Просте множення":
+        a = randrange(1, 11)
+        b = randrange(1, 11)
+        return a, b, a * b, "*"
+
+    if problem_type == "Ділення":
+        a, b = 0, 0
+        while a <= b or a % b != 0 or b == 0:
+            a = randrange(1, 101)
+            b = randrange(1, 101)
+        return a, b, a / b, "/"
+
+    if problem_type == "Просте ділення":
+        a, b = 0, 0
+        while a <= b or a % b != 0 or b == 0:
+            a = randrange(1, 11)
+            b = randrange(1, 11)
+        return a, b, a / b, "/"
 
 
 def main(page: ft.Page):
+    page.window_icon = "icon.png"
+    page.favicon = "icon.png"
     page.title = "Математичний тренажер"
     page.theme_mode = ft.ThemeMode.DARK
     page.window_width = 400
@@ -45,7 +76,7 @@ def main(page: ft.Page):
         state["total"] = n
         state["score"] = 0
         state["current_idx"] = 0
-        state["problems"] = [get_problem() for _ in range(n)]
+        state["problems"] = [get_problem(problem_choise.value) for _ in range(n)]
 
         setup_view.visible = False
         game_view.visible = True
@@ -56,7 +87,7 @@ def main(page: ft.Page):
     def next_problem():
         if state["current_idx"] < state["total"]:
             p = state["problems"][state["current_idx"]]
-            question_text.value = f"{p[0]} - {p[1]}"
+            question_text.value = f"{p[0]} {p[3]} {p[1]}"
             answer_field.value = ""
             answer_field.focus()
         else:
@@ -90,10 +121,24 @@ def main(page: ft.Page):
         num_input.value = "5"
         page.update()
 
+
     # Екрани (View)
     num_input = ft.TextField(value="5", label="Скільки прикладів?", width=200)
+    problem_choise = ft.Dropdown(
+        value="Додавання",
+        label="Яка дія?",
+        options=[
+            ft.dropdown.Option("Додавання"),
+            ft.dropdown.Option("Віднімання"),
+            ft.dropdown.Option("Множення"),
+            ft.dropdown.Option("Просте множення"),
+            ft.dropdown.Option("Ділення"),
+            ft.dropdown.Option("Просте ділення"),
+        ])
+
     setup_view = ft.Column([
         title,
+        problem_choise,
         num_input,
         ft.ElevatedButton("Почати", on_click=start_game)
     ], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
