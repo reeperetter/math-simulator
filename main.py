@@ -1,6 +1,7 @@
 import flet as ft
 from random import randrange
 
+
 def get_problem(problem_type):
     if problem_type == "Додавання":
         a = randrange(1, 101)
@@ -60,8 +61,9 @@ def main(page: ft.Page):
     # Елементи інтерфейсу
     title = ft.Text("Математика", size=30, weight=ft.FontWeight.BOLD)
     question_text = ft.Text("", size=40)
-    answer_field = ft.TextField(label="Твоя відповідь", keyboard_type=ft.KeyboardType.NUMBER,
-                                width=200, on_submit=lambda _: check_answer(None))
+    # answer_field = ft.TextField(label="Твоя відповідь", keyboard_type=ft.KeyboardType.NUMBER,
+    #                             width=200, autofocus=True, on_submit=lambda _: check_answer(None))
+    answer_container = ft.Column([], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
     result_text = ft.Text("", size=20)
 
     # Функція для початку нової гри
@@ -76,7 +78,8 @@ def main(page: ft.Page):
         state["total"] = n
         state["score"] = 0
         state["current_idx"] = 0
-        state["problems"] = [get_problem(problem_choise.value) for _ in range(n)]
+        state["problems"] = [get_problem(
+            problem_choise.value) for _ in range(n)]
 
         setup_view.visible = False
         game_view.visible = True
@@ -86,20 +89,28 @@ def main(page: ft.Page):
     # Функція для відображення наступного прикладу
     def next_problem():
         if state["current_idx"] < state["total"]:
-            progress_bar.value = state["current_idx"] / state["total"]
+            progress_bar.value = state["current_idx"] / state["total"] + 100 / state["total"] / 100
             p = state["problems"][state["current_idx"]]
             question_text.value = f"{p[0]} {p[3]} {p[1]}"
-            answer_field.value = ""
+            # answer_field.value = ""
+            answer_field = ft.TextField(
+                value="",
+                label="Твоя відповідь",
+                keyboard_type=ft.KeyboardType.NUMBER,
+                width=200,
+                autofocus=True,
+                on_submit=check_answer
+            )
+            answer_container.controls.clear()
+            answer_container.controls.append(answer_field)
             page.update()
-            answer_field.focus()
         else:
             show_final_results()
-            page.update()
 
     # Перевірка відповіді
     def check_answer(e):
         try:
-            user_answer = int(answer_field.value)
+            user_answer = int(answer_container.controls[0].value)
             correct_answer = state["problems"][state["current_idx"]][2]
 
             if user_answer == correct_answer:
@@ -108,7 +119,7 @@ def main(page: ft.Page):
             state["current_idx"] += 1
             next_problem()
         except:
-            answer_field.error = "Введіть число"
+            answer_container.controls[0].error = "Введіть число"
         page.update()
 
     def show_final_results():
@@ -122,7 +133,6 @@ def main(page: ft.Page):
         setup_view.visible = True
         num_input.value = "5"
         page.update()
-
 
     # Екрани (View)
     num_input = ft.TextField(value="5", label="Скільки прикладів?", width=200)
@@ -149,7 +159,7 @@ def main(page: ft.Page):
         ft.Text("Розв'яжи приклад:", size=20),
         progress_bar,
         question_text,
-        answer_field,
+        answer_container,
         ft.ElevatedButton("Відповісти", on_click=check_answer,
                           bgcolor=ft.Colors.BLUE_700, color=ft.Colors.WHITE)
     ], visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
