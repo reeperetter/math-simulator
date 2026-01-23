@@ -9,6 +9,16 @@ def main(page: ft.Page):
     page.bgcolor = "#4B496E"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.padding = 0
+
+    background = ft.Container(
+        expand=True,
+        image=ft.DecorationImage(
+            src="assets/bg.webp",
+            fit=ft.BoxFit.COVER
+        )
+    )
+    page.add(background)
 
     state = State()
     progress_bar = ft.ProgressBar(width=400, value=0, color="green")
