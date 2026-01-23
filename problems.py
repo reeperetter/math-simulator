@@ -1,6 +1,7 @@
 from random import randrange
 
-def get_problem(problem_type):
+
+def get_problem(problem_type) -> tuple[int, int, int | float, str]:
     if problem_type == "Додавання":
         a = randrange(1, 101)
         b = randrange(1, 101)
@@ -36,3 +37,5 @@ def get_problem(problem_type):
             a = randrange(1, 11)
             b = randrange(1, 11)
         return a, b, a / b, "/"
+
+    raise ValueError(f"Невідомий тип задачі: {problem_type}")

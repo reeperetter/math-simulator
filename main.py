@@ -1,5 +1,4 @@
 import flet as ft
-from logic import get_problem
 from state import State
 
 
@@ -15,7 +14,8 @@ def main(page: ft.Page):
     progress_bar = ft.ProgressBar(width=400, value=0, color="green")
     title = ft.Text("Математика", size=30, weight=ft.FontWeight.BOLD)
     question_text = ft.Text("", size=40)
-    answer_container = ft.Column([], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+    answer_container = ft.Column(
+        [], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
     result_text = ft.Text("", size=20)
 
     def start_game(e):
@@ -26,49 +26,47 @@ def main(page: ft.Page):
         except:
             return
 
-        state.total = n
-        state.score = 0
-        state.current_idx = 0
-        state.problems = [get_problem(
-            problem_choise.value) for _ in range(n)]
+        choise = problem_choise.value
+        if choise is None:
+            return
+        state.start_game(n, choise)
 
         setup_view.visible = False
         game_view.visible = True
-        next_problem()
+        show_problem()
         page.update()
 
-    def next_problem():
-        if state.current_idx < state.total:
-            progress_bar.value = state.current_idx / state.total + 100 / state.total / 100
-            p = state.problems[state.current_idx]
-            question_text.value = f"{p[0]} {p[3]} {p[1]}"
-            answer_field = ft.TextField(
-                value="",
+    def show_problem():
+        if not state.has_next():
+            show_final_results()
+            return
+
+        progress_bar.value = state.current_idx / state.total + 100 / state.total / 100
+        p = state.current_problem()
+        if p is None:
+            return
+        question_text.value = f"{p[0]} {p[3]} {p[1]}"
+        answer_container.controls.clear()
+        answer_container.controls.append(
+            ft.TextField(
                 label="Твоя відповідь",
                 keyboard_type=ft.KeyboardType.NUMBER,
-                width=200,
                 autofocus=True,
                 on_submit=check_answer
             )
-            answer_container.controls.clear()
-            answer_container.controls.append(answer_field)
-            page.update()
-        else:
-            show_final_results()
+        )
+        page.update()
 
     def check_answer(e):
         try:
-            user_answer = int(answer_container.controls[0].value)
-            correct_answer = state.problems[state.current_idx][2]
-
-            if user_answer == correct_answer:
-                state.score += 1
-
-            state.current_idx += 1
-            next_problem()
+            value = int(answer_container.controls[0].value)
         except:
             answer_container.controls[0].error = "Введіть число"
-        page.update()
+            page.update()
+            return
+
+        state.check_answer(value)
+        show_problem()
 
     def show_final_results():
         game_view.visible = False
@@ -77,6 +75,7 @@ def main(page: ft.Page):
         page.update()
 
     def restart(e):
+        state.reset()
         final_view.visible = False
         setup_view.visible = True
         num_input.value = "5"
