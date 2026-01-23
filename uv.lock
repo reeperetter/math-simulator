@@ -485,23 +485,16 @@ dependencies = [
     { name = "clang" },
     { name = "cmake" },
     { name = "flet", extra = ["all"] },
-<<<<<<< HEAD
     { name = "pillow" },
-=======
->>>>>>> 24b4b33bf92dd340b34fbf7d15fdb8e2ae47e059
     { name = "pyinstaller" },
 ]
 
 [package.metadata]
 requires-dist = [
-<<<<<<< HEAD
-    { name = "flet", extras = ["all"], specifier = ">=0.80.2" },
-    { name = "pillow", specifier = ">=12.1.0" },
-=======
     { name = "clang", specifier = ">=21.1.7" },
     { name = "cmake", specifier = ">=4.2.1" },
     { name = "flet", extras = ["all"], specifier = ">=0.80.2" },
->>>>>>> 24b4b33bf92dd340b34fbf7d15fdb8e2ae47e059
+    { name = "pillow", specifier = ">=12.1.0" },
     { name = "pyinstaller", specifier = ">=6.18.0" },
 ]
 
@@ -586,7 +579,6 @@ wheels = [
 ]
 
 [[package]]
-<<<<<<< HEAD
 name = "pillow"
 version = "12.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -656,8 +648,6 @@ wheels = [
 ]
 
 [[package]]
-=======
->>>>>>> 24b4b33bf92dd340b34fbf7d15fdb8e2ae47e059
 name = "pydantic"
 version = "2.12.5"
 source = { registry = "https://pypi.org/simple" }
