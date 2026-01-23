@@ -1,5 +1,6 @@
 import flet as ft
 from logic import get_problem
+from state import State
 
 
 def main(page: ft.Page):
@@ -10,13 +11,7 @@ def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    # Змінні стану
-    state = {
-        "problems": [],
-        "current_idx": 0,
-        "score": 0,
-        "total": 0,
-    }
+    state = State()
     progress_bar = ft.ProgressBar(width=400, value=0, color="green")
     title = ft.Text("Математика", size=30, weight=ft.FontWeight.BOLD)
     question_text = ft.Text("", size=40)
@@ -31,10 +26,10 @@ def main(page: ft.Page):
         except:
             return
 
-        state["total"] = n
-        state["score"] = 0
-        state["current_idx"] = 0
-        state["problems"] = [get_problem(
+        state.total = n
+        state.score = 0
+        state.current_idx = 0
+        state.problems = [get_problem(
             problem_choise.value) for _ in range(n)]
 
         setup_view.visible = False
@@ -43,9 +38,9 @@ def main(page: ft.Page):
         page.update()
 
     def next_problem():
-        if state["current_idx"] < state["total"]:
-            progress_bar.value = state["current_idx"] / state["total"] + 100 / state["total"] / 100
-            p = state["problems"][state["current_idx"]]
+        if state.current_idx < state.total:
+            progress_bar.value = state.current_idx / state.total + 100 / state.total / 100
+            p = state.problems[state.current_idx]
             question_text.value = f"{p[0]} {p[3]} {p[1]}"
             answer_field = ft.TextField(
                 value="",
@@ -64,12 +59,12 @@ def main(page: ft.Page):
     def check_answer(e):
         try:
             user_answer = int(answer_container.controls[0].value)
-            correct_answer = state["problems"][state["current_idx"]][2]
+            correct_answer = state.problems[state.current_idx][2]
 
             if user_answer == correct_answer:
-                state["score"] += 1
+                state.score += 1
 
-            state["current_idx"] += 1
+            state.current_idx += 1
             next_problem()
         except:
             answer_container.controls[0].error = "Введіть число"
@@ -78,7 +73,7 @@ def main(page: ft.Page):
     def show_final_results():
         game_view.visible = False
         final_view.visible = True
-        final_score_text.value = f"Твій результат: {state['score']} з {state['total']}"
+        final_score_text.value = f"Твій результат: {state.score} з {state.total}"
         page.update()
 
     def restart(e):

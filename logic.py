@@ -36,4 +36,3 @@ def get_problem(problem_type):
             a = randrange(1, 11)
             b = randrange(1, 11)
         return a, b, a / b, "/"
-
