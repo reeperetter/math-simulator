@@ -48,7 +48,7 @@ def main(page: ft.Page):
     # Змінні стану
     state = {
         "problems": [],
-        "current_idx": 0
+        "current_idx": 0,
         "score": 0,
         "total": 0
     }
