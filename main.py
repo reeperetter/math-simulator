@@ -42,6 +42,8 @@ def get_problem(problem_type):
 def main(page: ft.Page):
     page.title = "Математичний тренажер"
     page.theme_mode = ft.ThemeMode.DARK
+    page.dark_theme = ft.Theme(color_scheme_seed=ft.Colors.BLUE)
+    page.bgcolor = "#4B496E"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
