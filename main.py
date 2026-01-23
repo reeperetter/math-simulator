@@ -1,43 +1,5 @@
 import flet as ft
-from random import randrange
-
-
-def get_problem(problem_type):
-    if problem_type == "Додавання":
-        a = randrange(1, 101)
-        b = randrange(1, 101)
-        return a, b, a + b, "+"
-
-    if problem_type == "Віднімання":
-        a, b = 0, 0
-        while a <= b:
-            a = randrange(1, 101)
-            b = randrange(1, 101)
-        return a, b, a - b, "-"
-
-    if problem_type == "Множення":
-        a = randrange(1, 101)
-        b = randrange(1, 101)
-        return a, b, a * b, "*"
-
-    if problem_type == "Просте множення":
-        a = randrange(1, 11)
-        b = randrange(1, 11)
-        return a, b, a * b, "*"
-
-    if problem_type == "Ділення":
-        a, b = 0, 0
-        while a <= b or a % b != 0 or b == 0:
-            a = randrange(1, 101)
-            b = randrange(1, 101)
-        return a, b, a / b, "/"
-
-    if problem_type == "Просте ділення":
-        a, b = 0, 0
-        while a <= b or a % b != 0 or b == 0:
-            a = randrange(1, 11)
-            b = randrange(1, 11)
-        return a, b, a / b, "/"
+from logic import get_problem
 
 
 def main(page: ft.Page):
@@ -55,18 +17,12 @@ def main(page: ft.Page):
         "score": 0,
         "total": 0,
     }
-
-    progress_bar = ft.ProgressBar(width=400, value=0, color="yellow")
-
-    # Елементи інтерфейсу
+    progress_bar = ft.ProgressBar(width=400, value=0, color="green")
     title = ft.Text("Математика", size=30, weight=ft.FontWeight.BOLD)
     question_text = ft.Text("", size=40)
-    # answer_field = ft.TextField(label="Твоя відповідь", keyboard_type=ft.KeyboardType.NUMBER,
-    #                             width=200, autofocus=True, on_submit=lambda _: check_answer(None))
     answer_container = ft.Column([], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
     result_text = ft.Text("", size=20)
 
-    # Функція для початку нової гри
     def start_game(e):
         try:
             n = int(num_input.value)
@@ -86,13 +42,11 @@ def main(page: ft.Page):
         next_problem()
         page.update()
 
-    # Функція для відображення наступного прикладу
     def next_problem():
         if state["current_idx"] < state["total"]:
             progress_bar.value = state["current_idx"] / state["total"] + 100 / state["total"] / 100
             p = state["problems"][state["current_idx"]]
             question_text.value = f"{p[0]} {p[3]} {p[1]}"
-            # answer_field.value = ""
             answer_field = ft.TextField(
                 value="",
                 label="Твоя відповідь",
@@ -107,7 +61,6 @@ def main(page: ft.Page):
         else:
             show_final_results()
 
-    # Перевірка відповіді
     def check_answer(e):
         try:
             user_answer = int(answer_container.controls[0].value)
