@@ -52,8 +52,10 @@ def main(page: ft.Page):
         "problems": [],
         "current_idx": 0,
         "score": 0,
-        "total": 0
+        "total": 0,
     }
+
+    progress_bar = ft.ProgressBar(width=400, value=0, color="yellow")
 
     # Елементи інтерфейсу
     title = ft.Text("Математика", size=30, weight=ft.FontWeight.BOLD)
@@ -84,13 +86,15 @@ def main(page: ft.Page):
     # Функція для відображення наступного прикладу
     def next_problem():
         if state["current_idx"] < state["total"]:
+            progress_bar.value = state["current_idx"] / state["total"]
             p = state["problems"][state["current_idx"]]
             question_text.value = f"{p[0]} {p[3]} {p[1]}"
             answer_field.value = ""
-            # answer_field.focus()
+            page.update()
+            answer_field.focus()
         else:
             show_final_results()
-        page.update()
+            page.update()
 
     # Перевірка відповіді
     def check_answer(e):
@@ -105,7 +109,7 @@ def main(page: ft.Page):
             next_problem()
         except:
             answer_field.error = "Введіть число"
-            page.update()
+        page.update()
 
     def show_final_results():
         game_view.visible = False
@@ -143,6 +147,7 @@ def main(page: ft.Page):
 
     game_view = ft.Column([
         ft.Text("Розв'яжи приклад:", size=20),
+        progress_bar,
         question_text,
         answer_field,
         ft.ElevatedButton("Відповісти", on_click=check_answer,
