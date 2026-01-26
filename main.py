@@ -4,21 +4,17 @@ from state import State
 
 def main(page: ft.Page):
     page.title = "Математичний тренажер"
-    page.theme_mode = ft.ThemeMode.DARK
-    page.dark_theme = ft.Theme(color_scheme_seed=ft.Colors.BLUE)
-    page.bgcolor = "#4B496E"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.padding = 0
 
-    background = ft.Container(
-        expand=True,
+    page.bgcolor = ft.Colors.TRANSPARENT
+    page.decoration = ft.BoxDecoration(
         image=ft.DecorationImage(
             src="assets/bg.webp",
-            fit=ft.BoxFit.COVER
+            fit=ft.BoxFit.COVER,
         )
     )
-    page.add(background)
 
     state = State()
     progress_bar = ft.ProgressBar(width=400, value=0, color="green")
@@ -109,8 +105,11 @@ def main(page: ft.Page):
         title,
         problem_choise,
         num_input,
-        ft.ElevatedButton("Почати", on_click=start_game)
-    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        ft.ElevatedButton("Почати", on_click=start_game,
+                          bgcolor=ft.Colors.BLUE_700, color=ft.Colors.WHITE)
+    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment=ft.MainAxisAlignment.CENTER
+    )
 
     game_view = ft.Column([
         ft.Text("Розв'яжи приклад:", size=20),
@@ -119,16 +118,26 @@ def main(page: ft.Page):
         answer_container,
         ft.ElevatedButton("Відповісти", on_click=check_answer,
                           bgcolor=ft.Colors.BLUE_700, color=ft.Colors.WHITE)
-    ], visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+    ], visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment=ft.MainAxisAlignment.CENTER
+    )
 
     final_score_text = ft.Text("", size=25)
     final_view = ft.Column([
         ft.Text("Гру закінчено!", size=30),
         final_score_text,
         ft.ElevatedButton("Спробувати знову", on_click=restart)
-    ], visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+    ], visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment=ft.MainAxisAlignment.CENTER
+    )
+
+    def centered(view: ft.Control) -> ft.Container:
+        return ft.Container(
+            expand=True,
+            alignment=ft.Alignment.CENTER,
+            content=view
+        )
 
     page.add(setup_view, game_view, final_view)
-
 
 ft.run(main)
