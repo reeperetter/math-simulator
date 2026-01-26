@@ -3,8 +3,10 @@ from random import randrange
 
 def get_problem(problem_type) -> tuple[int, int, int | float, str]:
     if problem_type == "Додавання":
-        a = randrange(1, 101)
-        b = randrange(1, 101)
+        a, b = 100, 100
+        while a + b >= 100:
+            a = randrange(1, 101)
+            b = randrange(1, 101)
         return a, b, a + b, "+"
 
     if problem_type == "Віднімання":

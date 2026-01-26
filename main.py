@@ -126,18 +126,13 @@ def main(page: ft.Page):
     final_view = ft.Column([
         ft.Text("Гру закінчено!", size=30),
         final_score_text,
-        ft.ElevatedButton("Спробувати знову", on_click=restart)
+        ft.ElevatedButton("Спробувати знову", on_click=restart,
+                          bgcolor=ft.Colors.BLUE_700, color=ft.Colors.WHITE)
     ], visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         alignment=ft.MainAxisAlignment.CENTER
     )
 
-    def centered(view: ft.Control) -> ft.Container:
-        return ft.Container(
-            expand=True,
-            alignment=ft.Alignment.CENTER,
-            content=view
-        )
-
     page.add(setup_view, game_view, final_view)
+
 
 ft.run(main)
